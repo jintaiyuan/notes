@@ -1,0 +1,45 @@
+1. white-space 父元素位display：flex 时不生效 需要为display:block
+
+2. uniapp中page.json的tabbar路径名必须跟pages中的一样 两个属性中都要写
+
+3. uniapp tabBar 切换时页面中的组件不更新 可以随便传一个值给子组件 在onShow时更改 子组件中用watch监听this.$props.属性名 从而实现切换时更新子组件
+
+4.箭头函数的arguments和this一样 在定义时就已经绑定 都指向定义时所在函数的值
+  function a (param) {
+	  let b = ()=>{
+		  console.log(this,arguments)
+	  }
+  }
+  相当于
+  function a (param) {
+	  let that = this,
+		  context = arguments ;
+	  let b = function (){
+		  console.log(that,context)
+	  }
+  }
+  可以结合apply(this,arguments)来封装函数 // apply参数为数组或伪数组  call的参数是一个一个值，需要全部列出来
+  
+  arguments.callee指向当前正在执行的函数， 函数名.caller指当前函数的调用者=arguments.callee.caller //严格模式下不可以 不能用es6语法写
+  
+ 5.this 谁调用指向谁 将函数名传递给别的对象不起作用 只指向函数执行时前边的对象 也就是函数名后面加()执行了才算
+   var a = {a:1,fn:function(){console.log(this.a)}}; a.fn() //1
+   var b = {a:2}; b.fn=a.fn; b.fn() //2
+   this指向与作用域无关
+   
+   
+ 6.函数有prototype 可以理解为传承 是将属性传递给new出来的实例的
+   对象有__proto__ 可以理解为继承 继承来自原型的属性、方法
+   原型有construcer 指向函数
+   
+   
+ 7.js根对象是Object.prototype， Object是一个构造函数
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
