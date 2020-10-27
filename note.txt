@@ -1,4 +1,4 @@
-1. white-space 父元素位display：flex 时不生效 需要为display:block
+﻿1. white-space 父元素位display：flex 时不生效 需要为display:block
 
 2. uniapp中page.json的tabbar路径名必须跟pages中的一样 两个属性中都要写
 
@@ -34,7 +34,17 @@
    
    
  7.js根对象是Object.prototype， Object是一个构造函数
- 
+
+
+
+transition 立刻设置后不生效 可以将下一个要设置的transition放到一个很小的延迟后面，但不能太小  比如轮播中最后一张图切换到第一张图时transition设为0后立刻切换回来 
+ele.style.transition='0s'
+ele.style.transform='translateX(0)'
+settimeout(()=>{
+	ele.style.transition='1s'
+	ele.style.transform='translateX(500px)'
+	
+},30) 
  
  
  
