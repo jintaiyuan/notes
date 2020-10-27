@@ -37,19 +37,34 @@
 
 
 
-transition 立刻设置后不生效 可以将下一个要设置的transition放到一个很小的延迟后面，但不能太小  比如轮播中最后一张图切换到第一张图时transition设为0后立刻切换回来 
-ele.style.transition='0s'
-ele.style.transform='translateX(0)'
-settimeout(()=>{
-	ele.style.transition='1s'
-	ele.style.transform='translateX(500px)'
+8	transition 立刻设置后不生效 可以将下一个要设置的transition放到一		个很小的延迟后面，但不能太小  比如轮播中最后一张图切换到第一张图		时transition设为0后立刻切换回来 
+	ele.style.transition='0s'
+	ele.style.transform='translateX(0)'
+	settimeout(()=>{
+		ele.style.transition='1s'
+		ele.style.transform='translateX(500px)'
 	
-},30) 
+	},30) 
  
  
+ 9.import编译时执行 require等是运行时执行
  
- 
- 
+
+ 10 class中使用=写方法对定义在实例上
+	class foo {
+		funa(){
+			
+		}
+		
+		funb=()=>{
+			
+		}
+		
+		func=function(){
+		
+		}
+	}
+  funb,func方法在实例上 funa在__proto__上
  
  
  
