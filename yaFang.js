@@ -1,5 +1,5 @@
 // 防抖
-var debounce = function (n,fn) {
+var debounce = function (fn,n) {
 				var a;
 				return function (){
 					clearTimeout(a)
@@ -11,7 +11,7 @@ var debounce = function (n,fn) {
 			
 			
 // 节流			
-var throttle = function(n,fn){
+var throttle = function(fn,n){
 				let state = true,
 				    timmer;
 				 return function(){
