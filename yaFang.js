@@ -60,7 +60,7 @@ class swiper {
 					this.dir = dir
 					this.dur = dur;
 					this.speed = speed;
-					this.num = this.dir=='right'? 0  : 1,
+					this.num = 0,
 					this.playdir=this.dir=='right'? this.right : this.left
 					this.length = this.ele.children.length
 					this.width = this.ele.children[0].offsetWidth

@@ -53,7 +53,7 @@
 					this.dir = dir
 					this.dur = dur;
 					this.speed = speed;
-					this.num = this.dir=='right'? 0  : 1,
+					this.num = 0,
 					this.playdir=this.dir=='right'? this.right : this.left
 					this.length = this.ele.children.length
 					this.width = this.ele.children[0].offsetWidth
@@ -126,7 +126,7 @@
 					console.log(this.outNumArrR[this.num])
 				}
 			}
-			let run = new swiper(inner,'right' ,4000, 4000)
+			let run = new swiper(inner,'right' ,4000, 2000)
 			run.play()
 			// function change(ele,dur,speed){
 			// 	setTimeout(function () {
