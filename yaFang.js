@@ -133,3 +133,124 @@ class swiper {
 					console.log(this.outNumArrR[this.num])
 				}
 			}
+			
+			
+			
+			
+			
+			
+			
+加载大量数据时使用 参数依次为 
+		data	要渲染的所有数据
+		show	要显示的数据的容器 是个数组 这里的数据将会被渲染到页面 
+		_stepLength  每次更新的数据长度
+		_showPageNum 页面上要渲染多少页元素
+		如果自己创造了一个滚动元素 后三个参数一样 都为那个滚动元素 不然就传 'html','父元素css选择器' ,'body'
+		_scrollElement 滚动的元素 填写css	选择器 比如 '.test'		
+		_fatherElement 渲染元素的父元素 若是自己创造的滚动元素position最好不为static,若是直接添加到body中的 最好不再有offsetparent 不然会影响加载新数据时机的判断
+		listener		添加滚动事件的元素	
+function bigData(data,show,_stepLength,_showPageNum,_scrollElement,_fatherElement,listener){
+				
+				var dataArr = data,		//传过来的所有数据
+					showData = show;		//页面要展示的数据
+					
+					
+				
+				
+				var page = 0,			//展示的第几页数据
+					stepLength = _stepLength,		//每页的数据长度
+					showPageNum = _showPageNum;		//页面要展示几页数据
+				document.body.style.paddingTop = '0px'
+				var scrollElement = document.querySelector(_scrollElement),		//滚动的元素 如果设为div 则跟fatherElement一样 否则为html元素 因为body可以监听滚动事件 却没有滚动方法 
+					fatherElement = document.querySelector(_fatherElement);		//包裹展示元素的父元素 
+					
+				//向后面追加数据
+				function down (){
+					if (page > dataArr.length/stepLength-1){
+						return
+					}
+					
+					// 初始化 
+					if (page === 0) {
+						var currentData = dataArr.slice(0,stepLength*showPageNum)
+						page = showPageNum
+						showData.push(...currentData)
+						changeChild()
+						scrollElement.scrollTop = 0
+						console.log(currentData,page);
+						return
+					}
+					
+					//截取要显示的数据
+					var currentData = dataArr.slice(page*stepLength,Math.min( page*stepLength + stepLength,dataArr.length))
+					page++
+					//显示数据的数组中删除前面不需要显示的数据
+					if (page > showPageNum) {
+						showData.splice(0,currentData.length)
+						scrollElement.scrollTop -= currentData.length * fatherElement.children[0].offsetHeight	
+						// fatherElement.style.paddingTop = parseInt(fatherElement.style.paddingTop) + fatherElement.children[0].offsetHeight*currentData.length + 'px'
+					}
+					
+					//显示数据的数组中添加后面显示的数据
+					showData.push(...currentData)
+					
+					changeChild()	//vue中直接将showData写在data中会自己更新，不需要这一步
+					
+					
+					// if (page === 3) {
+					// 	document.body.style.paddingBottom = fatherElement.children[0].offsetHeight * dataArr.length + 'px'
+					// }
+					// document.body.style.paddingBottom = parseInt(document.body.style.paddingBottom) - fatherElement.children[0].offsetHeight*currentData.length + 'px'
+					
+					console.log(currentData,showData,document.body.style.paddingTop,page)
+				}
+				
+				
+				//向前面追加数据
+				function up (){
+					if(page <= showPageNum){
+						return
+					}
+					var currentData = dataArr.slice((page-showPageNum-1)*stepLength,(page-showPageNum)*stepLength)	//截取数据
+					showData.splice(showData.length-currentData.length,currentData.length)	//移除不需要的数据
+					showData.unshift(...currentData)	//推入要展示的数据
+					page--
+					changeChild()
+					// document.body.style.paddingBottom = parseInt(document.body.style.paddingBottom) + fatherElement.children[0].offsetHeight*currentData.length + 'px'
+					scrollElement.scrollTop += currentData.length * fatherElement.children[0].offsetHeight
+					// fatherElement.style.paddingTop = parseInt(fatherElement.style.paddingTop) - fatherElement.children[0].offsetHeight*currentData.length + 'px'
+					console.log(currentData,showData,fatherElement.style.paddingTop);
+				}
+				
+				//先执行一次向里面添加数据，不然没有滚动事件，永远不会触发
+				down()
+				
+				// 更新元素到视图 
+				function changeChild (){
+					var str = '';
+					showData.map(function (item,index) {
+						str+=`<div>${item}</div>`
+					})
+					fatherElement.innerHTML = str
+				}
+				
+				
+				var debounceDown = debounce(down,200)
+				var debounceUp = debounce(up,200)
+				
+				//根据滚动长度判断向后还是向前追加数据
+				function judge () {
+					if(scrollElement.scrollTop < fatherElement.children[1].offsetTop){
+						console.log('do')
+						debounceUp()
+						
+					}else if(scrollElement.scrollTop > fatherElement.children[fatherElement.children.length - 3].offsetTop) {
+						debounceDown()
+						
+					}
+					console.log(1,scrollElement.scrollTop,fatherElement.children[1].offsetTop,fatherElement.children[fatherElement.children.length - 3].offsetTop)
+				}
+				
+				//监听事件 
+				document.querySelector(listener).onscroll = throttle(judge,200)
+			}

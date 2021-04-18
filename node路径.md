@@ -15,6 +15,11 @@
 	  
 ## node 中使用当前路径
    `path.dirname(__filename)`
-   `path.resolve(__dirname,'../当前目录名')`
-   
-   
+   `__dirname`
+   `path.resolve(__dirname,'./')`   
+   *path.resolve中使用./ 如果前面没有参数 ./ 指执行`node`命令的路径
+						如果前面有参数 ./指前面参数的目录 
+						
+## path.join()与path.resolver()区别
+   `path.join('/foo','/bar')` 返回 `/foo/bar`    
+   `path.resolve('/foo','/bar')` 返回 `c:/bar`
